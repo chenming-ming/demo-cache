@@ -1,4 +1,4 @@
-import LoginModal from "./components/LoginModal";
+import LoginModal from "./pages/LoginModal";
 
 function App() {
   return (

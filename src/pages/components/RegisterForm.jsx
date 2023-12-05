@@ -1,11 +1,24 @@
 import { Button, Form, Input, Select, InputNumber, Modal } from "antd";
 
 export default function RegisterForm(props) {
-  const { isEdit, isModalOpen, formValues, form, onFinish, handleCancel } =
-    props;
+  const {
+    isEdit,
+    isModalOpen,
+    formValues,
+    form,
+    onFinish,
+    handleCancel,
+    handleOk,
+  } = props;
   return (
     <>
-      <Modal title={isEdit ? "新增" : "编辑"} open={isModalOpen} footer={null}>
+      <Modal
+        title={isEdit ? "新增" : "编辑"}
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        footer={null}
+      >
         <Form
           labelCol={{ span: 5 }}
           wrapperCol={{ span: 18 }}
@@ -103,7 +116,7 @@ export default function RegisterForm(props) {
             />
           </Form.Item>
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button style={{ marginLeft: "20px" }} onClick={handleCancel}>
+            <Button style={{ marginRight: "20px" }} onClick={handleCancel}>
               取消
             </Button>
             <Button type="primary" htmlType="submit">

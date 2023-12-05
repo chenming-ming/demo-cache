@@ -1,18 +1,57 @@
 import React from "react";
 import { Button, Table, Form, Space, Popconfirm } from "antd";
 import { useImmer } from "use-immer";
-import RegisterForm from "./RegisterForm";
+import RegisterForm from "./components/RegisterForm";
+import { columnsList } from "./components/config";
+import { mockData } from "../mock";
 
 export default function LoginModal() {
   const [isModalOpen, setIsModalOpen] = useImmer(false);
-  const [List, setList] = useImmer([]);
+  // const [List, setList] = useImmer([]);
+  const [List, setList] = useImmer(mockData);
   const [formValues, setFormValues] = useImmer({});
   const [isEdit, setIsEdit] = useImmer(true);
 
   const [form] = Form.useForm();
 
+  const columns = [
+    ...columnsList,
+    {
+      title: "操作",
+      key: "action",
+      render: (_, record) =>
+        List.length >= 1 && (
+          <Space size="middle">
+            <Button
+              onClick={() => {
+                setIsModalOpen(true);
+                setIsEdit(false);
+                setFormValues(record);
+                form.setFieldsValue(record);
+              }}
+            >
+              编辑
+            </Button>
+            <Popconfirm
+              title="是否需要删除?"
+              onConfirm={() => handleDelete(record.id)}
+            >
+              <Button type="primary" danger>
+                删除
+              </Button>
+            </Popconfirm>
+          </Space>
+        ),
+    },
+  ];
+
   const showModal = () => {
     setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    form.resetFields();
+    setIsModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -51,72 +90,6 @@ export default function LoginModal() {
     });
   };
 
-  const columns = [
-    {
-      title: "昵称",
-      dataIndex: "username",
-      key: "username",
-    },
-    {
-      title: "手机号",
-      dataIndex: "phone",
-      key: "phone",
-    },
-    {
-      title: "密码",
-      dataIndex: "password",
-      key: "password",
-    },
-    {
-      title: "确认密码",
-      key: "pwd",
-      dataIndex: "pwd",
-    },
-    {
-      title: "性别",
-      key: "sex",
-      dataIndex: "sex",
-    },
-    {
-      title: "年龄",
-      key: "age",
-      sort: (a, b) => a.age - b.age,
-      dataIndex: "age",
-    },
-    {
-      title: "个人简介",
-      key: "intro",
-      dataIndex: "intro",
-    },
-    {
-      title: "操作",
-      key: "action",
-      render: (_, record) =>
-        List.length >= 1 && (
-          <Space size="middle">
-            <Button
-              onClick={() => {
-                setIsModalOpen(true);
-                setIsEdit(false);
-                setFormValues(record);
-                form.setFieldsValue(record);
-              }}
-            >
-              编辑
-            </Button>
-            <Popconfirm
-              title="是否需要删除?"
-              onConfirm={() => handleDelete(record.id)}
-            >
-              <Button type="primary" danger>
-                删除
-              </Button>
-            </Popconfirm>
-          </Space>
-        ),
-    },
-  ];
-
   return (
     <div>
       <Button type="primary" onClick={showModal}>
@@ -130,6 +103,7 @@ export default function LoginModal() {
         isEdit={isEdit}
         formValues={formValues}
         form={form}
+        handleOk={handleOk}
       />
     </div>
   );

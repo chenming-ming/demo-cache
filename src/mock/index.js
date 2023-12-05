@@ -1,0 +1,32 @@
+export const mockData = [
+  {
+    id: "1",
+    username: "嚣张",
+    phone: 13762552234,
+    password: 12345,
+    pwd: 12345,
+    sex: "男",
+    age: 17,
+    intro: "hello react",
+  },
+  {
+    id: "2",
+    username: "嚣张2",
+    phone: 13762552234,
+    password: 12345,
+    pwd: 12345,
+    sex: "男",
+    age: 17,
+    intro: "hello react",
+  },
+  {
+    id: "3",
+    username: "嚣张3",
+    phone: 13762552234,
+    password: 12345,
+    pwd: 12345,
+    sex: "男",
+    age: 17,
+    intro: "hello react",
+  },
+];
