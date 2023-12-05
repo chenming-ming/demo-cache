@@ -1,16 +1,7 @@
 import React from "react";
-import {
-  Button,
-  Table,
-  Form,
-  Input,
-  Select,
-  InputNumber,
-  Modal,
-  Space,
-  Popconfirm,
-} from "antd";
+import { Button, Table, Form, Space, Popconfirm } from "antd";
 import { useImmer } from "use-immer";
+import RegisterForm from "./RegisterForm";
 
 export default function LoginModal() {
   const [isModalOpen, setIsModalOpen] = useImmer(false);
@@ -30,8 +21,15 @@ export default function LoginModal() {
   };
 
   const onFinish = (values) => {
-    //编辑逻辑
-    if (!isEdit) {
+    if (isEdit) {
+      //新增逻辑
+      setList((draft) => {
+        draft.unshift({ id: new Date().getTime(), ...values });
+      });
+      form.resetFields();
+      setIsModalOpen(false);
+    } else {
+      //编辑逻辑
       setList((draft) => {
         const index = draft.findIndex((item) => item.id === formValues.id);
         if (index !== -1) {
@@ -41,13 +39,6 @@ export default function LoginModal() {
       form.resetFields();
       setIsModalOpen(false);
     }
-
-    //新增逻辑
-    setList((draft) => {
-      draft.unshift({ id: new Date().getTime(), ...values });
-    });
-    form.resetFields();
-    setIsModalOpen(false);
   };
 
   // 删除逻辑
@@ -101,15 +92,14 @@ export default function LoginModal() {
       title: "操作",
       key: "action",
       render: (_, record) =>
-        List.length >= 1 ? (
+        List.length >= 1 && (
           <Space size="middle">
             <Button
               onClick={() => {
                 setIsModalOpen(true);
                 setIsEdit(false);
                 setFormValues(record);
-                //! 这边可以拿到值但是，form没有获取到
-                console.log(112, record, formValues);
+                form.setFieldsValue(record);
               }}
             >
               编辑
@@ -123,7 +113,7 @@ export default function LoginModal() {
               </Button>
             </Popconfirm>
           </Space>
-        ) : null,
+        ),
     },
   ];
 
@@ -133,64 +123,14 @@ export default function LoginModal() {
         注册新用户
       </Button>
       <Table columns={columns} dataSource={List} rowKey="id" />
-      <Modal title={isEdit ? "新增" : "编辑"} open={isModalOpen} footer={null}>
-        <Form
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 16 }}
-          initFormValue={formValues}
-          form={form}
-          name="register"
-          onFinish={onFinish}
-          style={{ maxWidth: 600 }}
-        >
-          <Form.Item
-            label="昵称"
-            name="username"
-            tooltip="留下你的美名流芳百世"
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item label="手机号" name="phone">
-            <Input />
-          </Form.Item>
-          <Form.Item label="密码" name="password" hasFeedback>
-            <Input.Password />
-          </Form.Item>
-          <Form.Item
-            label="确认密码"
-            name="pwd"
-            dependencies={["password"]}
-            hasFeedback
-          >
-            <Input.Password />
-          </Form.Item>
-          <Form.Item label="性别" name="sex">
-            <Select>
-              <Select.Option value="男">男</Select.Option>
-              <Select.Option value="女">女</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item label="年龄" name="age">
-            <InputNumber />
-          </Form.Item>
-          <Form.Item label="个人简介" name="intro">
-            <Input.TextArea
-              rows={2}
-              showCount
-              maxLength={100}
-              placeholder="简介"
-            />
-          </Form.Item>
-          <Form.Item>
-            <Space size="middle">
-              <Button onClick={handleCancel}>取消</Button>
-              <Button type="primary" htmlType="submit">
-                {isEdit ? "新增提交" : "编辑提交"}
-              </Button>
-            </Space>
-          </Form.Item>
-        </Form>
-      </Modal>
+      <RegisterForm
+        isModalOpen={isModalOpen}
+        handleCancel={handleCancel}
+        onFinish={onFinish}
+        isEdit={isEdit}
+        formValues={formValues}
+        form={form}
+      />
     </div>
   );
 }
