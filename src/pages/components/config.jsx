@@ -2,100 +2,110 @@ import { Button, Space, Popconfirm } from "antd";
 
 export const mockData = [
   {
-    id: 1,
-    username: "嚣张",
+    key: 1,
+    username: "测试1",
     phone: 13762552234,
     password: 12345,
-    pwd: 12345,
     sex: "男",
     age: 17,
     intro: "hello react",
   },
   {
-    id: 2,
-    username: "嚣张2",
-    phone: 13762552234,
-    password: 12345,
-    pwd: 12345,
-    sex: "男",
-    age: 17,
-    intro: "hello react",
+    key: 2,
+    username: "测试2",
+    phone: 1376255256,
+    password: 12234,
+    sex: "女",
+    age: 27,
+    intro: "hello world",
   },
   {
-    id: 3,
-    username: "嚣张3",
-    phone: 13762552234,
-    password: 12345,
-    pwd: 12345,
+    key: 3,
+    username: "测试3",
+    phone: 13763552234,
+    password: 12145,
     sex: "男",
-    age: 17,
-    intro: "hello react",
+    age: 37,
+    intro: "hello javascript",
+  },
+  {
+    key: 4,
+    username: "测试4",
+    phone: 13763442234,
+    password: 12445,
+    sex: "女",
+    age: 47,
+    intro: "hello javascript1",
+  },
+  {
+    key: 5,
+    username: "测试5",
+    phone: 13763522234,
+    password: 11145,
+    sex: "男",
+    age: 57,
+    intro: "hello javascript2",
+  },
+  {
+    key: 6,
+    username: "测试6",
+    phone: 13763552244,
+    password: 121456,
+    sex: "女",
+    age: 37,
+    intro: "hello man",
   },
 ];
 
-export const columns = (List, handleEdit, handleDelete) => {
+export const columns = (list, registerFormRef, handleDelete) => {
   return [
     {
       title: "昵称",
       dataIndex: "username",
-      key: "username",
     },
     {
       title: "手机号",
       dataIndex: "phone",
-      key: "phone",
     },
     {
       title: "密码",
       dataIndex: "password",
-      key: "password",
-    },
-    {
-      title: "确认密码",
-      key: "pwd",
-      dataIndex: "pwd",
     },
     {
       title: "性别",
-      key: "sex",
       dataIndex: "sex",
     },
     {
       title: "年龄",
-      key: "age",
-      sort: (a, b) => a.age - b.age,
       dataIndex: "age",
     },
     {
       title: "个人简介",
-      key: "intro",
       dataIndex: "intro",
     },
     {
       title: "操作",
-      key: "action",
-      render: (_, record) =>
-        List.length >= 1 && (
-          <Space size="middle">
-            <Button
-              onClick={() => {
-                handleEdit(record);
-              }}
-            >
-              编辑
+      render: (_, record) => (
+        <Space size="middle">
+          <Button
+            onClick={() => {
+              registerFormRef.current.handleEdit(record);
+            }}
+          >
+            编辑
+          </Button>
+          <Popconfirm
+            title="是否需要删除?"
+            onConfirm={() => handleDelete(record.key)}
+            okText="确认"
+            cancelText="取消"
+          >
+            <Button type="primary" danger>
+              删除
             </Button>
-            <Popconfirm
-              title="是否需要删除?"
-              onConfirm={() => handleDelete(record.id)}
-              okText="确认"
-              cancelText="取消"
-            >
-              <Button type="primary" danger>
-                删除
-              </Button>
-            </Popconfirm>
-          </Space>
-        ),
+          </Popconfirm>
+        </Space>
+      ),
     },
   ];
 };
