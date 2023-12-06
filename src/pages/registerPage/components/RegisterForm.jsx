@@ -1,5 +1,5 @@
 import { forwardRef, useImperativeHandle } from "react";
-import { Button, Form, Input, Select, InputNumber, Modal } from "antd";
+import { Button, Form, Input, Select, InputNumber, Modal, message } from "antd";
 import { useImmer } from "use-immer";
 
 function RegisterForm(props, ref) {
@@ -9,17 +9,18 @@ function RegisterForm(props, ref) {
 
   const [form] = Form.useForm();
 
+  // 将方法暴露给父组件
   useImperativeHandle(ref, () => ({
     showModal,
     handleEdit,
   }));
 
-  // 模态框
+  // 模态框显示
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  // 操作编辑逻辑
+  // 操作 - 编辑逻辑
   const handleEdit = (record) => {
     setIsModalOpen(true);
     setIsEdit(false);
@@ -27,15 +28,16 @@ function RegisterForm(props, ref) {
     form.setFieldsValue(record);
   };
 
-  // 模态框数据处理
+  // 模态框 - 数据处理
   const onFinish = (values) => {
     if (isEdit) {
-      // 表单新增逻辑
+      // 表单 - 新增逻辑
       setList((draft) => {
         draft.unshift({ key: new Date().getTime(), ...values });
       });
+      message.success("新增成功");
     } else {
-      // 表单编辑逻辑
+      // 表单 - 编辑逻辑
       setList((draft) => {
         const index = draft.findIndex((item) => item.key === formValues.key);
         if (index !== -1) {
@@ -43,18 +45,19 @@ function RegisterForm(props, ref) {
         }
       });
       setIsEdit(true);
+      message.success("编辑成功");
     }
     setIsModalOpen(false);
     form.resetFields();
   };
 
-  // 模态框
+  // 模态框 - 隐藏逻辑
   const handleOk = () => {
     form.resetFields();
     setIsModalOpen(false);
   };
 
-  // 模态框
+  // 模态框 - 隐藏逻辑
   const handleCancel = () => {
     form.resetFields();
     setIsModalOpen(false);

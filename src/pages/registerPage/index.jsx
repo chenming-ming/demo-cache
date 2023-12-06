@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Button, Table } from "antd";
+import { Button, Table, message } from "antd";
 import { useImmer } from "use-immer";
 import RegisterForm from "./components/RegisterForm";
 import { mockData, columns } from "./components/config";
@@ -14,6 +14,7 @@ export default function RegisterPage() {
     setList((draft) => {
       return draft.filter((d) => d.key !== key);
     });
+    message.success("删除成功");
   };
 
   return (
