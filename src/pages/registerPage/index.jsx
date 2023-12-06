@@ -27,9 +27,9 @@ export default function RegisterPage() {
         注册新用户
       </Button>
       <Table
-        columns={columns(list, registerFormRef, handleDelete)}
+        columns={columns(registerFormRef, handleDelete)}
         dataSource={list}
-        rowKey="id"
+        rowKey="key"
       />
       <RegisterForm
         isEdit={isEdit}

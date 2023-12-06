@@ -57,7 +57,7 @@ export const mockData = [
   },
 ];
 
-export const columns = (list, registerFormRef, handleDelete) => {
+export const columns = (registerFormRef, handleDelete) => {
   return [
     {
       title: "昵称",
@@ -89,7 +89,7 @@ export const columns = (list, registerFormRef, handleDelete) => {
         <Space size="middle">
           <Button
             onClick={() => {
-              registerFormRef.current.handleEdit(record);
+              registerFormRef?.current?.handleEdit(record);
             }}
           >
             编辑
