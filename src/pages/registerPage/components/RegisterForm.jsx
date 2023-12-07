@@ -17,6 +17,7 @@ function RegisterForm(props, ref) {
 
   // 模态框显示
   const showModal = () => {
+    setIsEdit(true);
     setIsModalOpen(true);
   };
 
@@ -80,12 +81,12 @@ function RegisterForm(props, ref) {
         style={{ maxWidth: 600 }}
       >
         <Form.Item
-          label="昵称"
+          label="姓名"
           name="username"
           tooltip="请输入您的姓名"
           rules={[{ required: true, message: "姓名不能为空" }]}
         >
-          <Input />
+          <Input placeholder="请输入您的姓名" />
         </Form.Item>
         <Form.Item
           label="手机号"
@@ -99,7 +100,7 @@ function RegisterForm(props, ref) {
             },
           ]}
         >
-          <Input />
+          <Input placeholder="请输入您的手机号,不允许使用非数字" />
         </Form.Item>
         <Form.Item
           label="密码"
@@ -108,14 +109,15 @@ function RegisterForm(props, ref) {
           rules={[
             {
               required: true,
-              message: "请填写密码",
+              message: "请填写密码,至少6位",
+              min: 6,
             },
           ]}
         >
-          <Input.Password />
+          <Input.Password placeholder="请输入您的密, 至少6位" />
         </Form.Item>
         <Form.Item label="性别" name="sex">
-          <Select>
+          <Select placeholder="请选择您的性别">
             <Select.Option value="男">男</Select.Option>
             <Select.Option value="女">女</Select.Option>
           </Select>
@@ -133,14 +135,17 @@ function RegisterForm(props, ref) {
             },
           ]}
         >
-          <InputNumber />
+          <InputNumber
+            style={{ width: "100%" }}
+            placeholder="请输入您的年龄,在9~100之间"
+          />
         </Form.Item>
         <Form.Item label="个人简介" name="intro">
           <Input.TextArea
             rows={2}
             showCount
             maxLength={100}
-            placeholder="简介"
+            placeholder="个人简介"
           />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
@@ -148,7 +153,7 @@ function RegisterForm(props, ref) {
             取消
           </Button>
           <Button type="primary" htmlType="submit">
-            {isEdit ? "新增提交" : "编辑提交"}
+            提交
           </Button>
         </Form.Item>
       </Form>
